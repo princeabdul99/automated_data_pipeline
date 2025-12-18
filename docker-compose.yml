@@ -1,0 +1,9 @@
+services:
+
+  etl_ingestion:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    command: python -m etl_ingestion.main
+    volumes:
+      - .:/app
