@@ -1,9 +1,25 @@
+
+volumes:
+  etl_postgres_data:
+    driver: local
+
 services:
 
-  etl_ingestion:
-    build: 
-      context: .
-      dockerfile: Dockerfile
-    command: python -m etl_ingestion.main
+  pgdatabase:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: toor
+      POSTGRES_DB: db_etl_dev
+    ports:
+     - "5437:5432"
     volumes:
-      - .:/app
+      - ./etl_postgres_data:/var/lib/postgresql
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "8087:80"  
