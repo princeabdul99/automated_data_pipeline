@@ -1,0 +1,4 @@
+
+venv
+etl_postgres_data
+.env
