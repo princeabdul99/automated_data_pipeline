@@ -1,4 +1,6 @@
 
 venv
-etl_postgres_data
+postgres/data
 .env
+__pycache__/
+etl_workflow/logs

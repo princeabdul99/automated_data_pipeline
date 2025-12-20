@@ -1,12 +1,16 @@
 
 volumes:
-  etl_postgres_data:
+  postgres:
     driver: local
+
+networks:
+  my_network:
+    driver: bridge
 
 services:
 
   pgdatabase:
-    image: postgres:15
+    image: postgres:16
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: toor
@@ -14,7 +18,11 @@ services:
     ports:
      - "5437:5432"
     volumes:
-      - ./etl_postgres_data:/var/lib/postgresql
+      - ./postgres/data:/var/lib/postgresql/data
+      - ./postgres/airflow_init.sql:/docker-entrypoint-initdb.d/airflow_init.sql
+    networks:
+      - my_network
+
 
   pgadmin:
     image: dpage/pgadmin4
@@ -22,4 +30,26 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: root
     ports:
-      - "8087:80"  
+      - "8087:80"
+    networks:
+      - my_network    
+
+
+  airflow:
+    image: apache/airflow:3.1.5
+    ports:
+      - "8097:8080" 
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@pgdatabase:5432/db_airflow
+      PYTHONPATH: /opt/airflow
+    volumes:
+      - ./etl_workflow/dags:/opt/airflow/dags
+      - ./etl_workflow/logs:/opt/airflow/logs
+      - ./etl_ingestion:/opt/airflow/etl_ingestion
+    depends_on:
+      - pgdatabase 
+    networks:
+      - my_network
+    command: >
+      bash -c "airflow db migrate && airflow standalone"  

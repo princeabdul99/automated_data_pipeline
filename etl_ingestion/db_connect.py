@@ -3,8 +3,8 @@ import psycopg2
 def connect_db():
     try:
         conn = psycopg2.connect(
-            host="localhost",
-            port=5437,
+            host="pgdatabase",
+            port=5432,
             dbname="db_etl_dev",
             user="root",
             password="toor"

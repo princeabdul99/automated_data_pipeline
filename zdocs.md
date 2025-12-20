@@ -4,10 +4,14 @@ etl-project/
 ├── docker-compose.yml
 ├── Dockerfile
 ├── requirements.txt
-└── etl_ingestion/
+├── etl_ingestion/
     ├── main.py
     ├── weather_api.py
-    └── ...py
+    └── db_connect.py
+└── etl_workflow/
+    ├── dags
+    ├── └── orchestrator.py 
+    └── logs   
 
 -->
 
@@ -24,4 +28,6 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted -Force
 
 <!-- Output: Unrestricted-->
 
+<!-- AIRFLOW CREDENTIAL -->
+<!-- Simple auth manager | Password for user 'admin': xAhDB8Gtz9zaZ44z -->
 
