@@ -52,4 +52,6 @@ services:
     networks:
       - my_network
     command: >
-      bash -c "airflow db migrate && airflow standalone"  
+      bash -c "airflow db migrate && airflow standalone"
+    env_file:
+      - .env      

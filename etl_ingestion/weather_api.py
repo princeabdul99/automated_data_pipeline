@@ -13,8 +13,17 @@ def fetch_data():
     try:
         response = requests.get(api_url)
         response.raise_for_status()
-        print("API response recieved successfully!")
-        return response.json()
+        
+        data = response.json()
+        # Weatherstack-specific validation
+        if "error" in data:
+            raise ValueError(f"Weather API error: {data['error']}")
+
+        if "current" not in data or "location" not in data:
+            raise KeyError(f"Unexpected API response structure: {data}")
+
+        print("API response received successfully!")
+        return data
     
     except requests.exceptions.RequestException as e:
         print(f"An error occured: {e}")

@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 
 
 
-# sys.path.append('/opt/etl_workflow/etl_ingestion')
 
 def safe_main_callable():
     from etl_ingestion.main import main
