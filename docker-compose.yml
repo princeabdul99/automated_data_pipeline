@@ -47,6 +47,7 @@ services:
       - ./etl_workflow/dags:/opt/airflow/dags
       - ./etl_workflow/logs:/opt/airflow/logs
       - ./etl_ingestion:/opt/airflow/etl_ingestion
+      - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - pgdatabase 
     networks:
@@ -54,4 +55,18 @@ services:
     command: >
       bash -c "airflow db migrate && airflow standalone"
     env_file:
-      - .env      
+      - .env
+
+  dbt:
+    image: ghcr.io/dbt-labs/dbt-postgres:1.9.latest
+    volumes:
+      - ./etl_transform/dev_dbt:/usr/app
+      - ./etl_transform:/root/.etl_transform
+    working_dir: /usr/app
+    environment:
+      DBT_PROFILES_DIR: "/root/.etl_transform"
+    depends_on:
+      - pgdatabase
+    networks:
+      - my_network
+    command: run

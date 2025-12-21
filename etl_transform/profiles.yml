@@ -1,0 +1,12 @@
+dev_dbt:
+  outputs:
+    dev:
+      dbname: db_etl_dev
+      host: pgdatabase
+      pass: toor
+      port: 5432
+      schema: dev
+      threads: 4
+      type: postgres
+      user: root
+  target: dev
