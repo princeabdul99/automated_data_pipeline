@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 API_KEY = os.getenv("WEATHERSTACK_API_KEY")
-api_url = f"http://api.weatherstack.com/current?access_key={API_KEY}&query=New York"
+api_url = f"http://api.weatherstack.com/current?access_key={API_KEY}&query=Cebu City"
 
 def fetch_data():
     print("Fetching weather data from weatherstack API...")
